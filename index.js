@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 dotenv.config();
 const cors = require("cors");
 const PORT = 3000;
+const connectStr =
+  "mongodb+srv:tiennguyen:tiennguyen@cluster0.lgquc3a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
 // Middle Ware
 const app = express();
 // app.use(express());
@@ -14,10 +17,12 @@ app.use(cors());
 const productRouter = require("./Routes/Product.Routes");
 const usersRouter = require("./Routes/Users.Routes");
 
-
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
 });
 // Routes
@@ -26,7 +31,7 @@ app.use("/users", usersRouter);
 
 // Run DB and server
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(connectStr)
   .then(() => {
     console.log("DB connected");
     app.listen(process.env.PORT || PORT, () => {
@@ -34,3 +39,4 @@ mongoose
     });
   })
   .catch((err) => console.log(err));
+
