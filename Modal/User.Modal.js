@@ -18,6 +18,7 @@ const userSchema = new Schema({
         quantity: { type: Number },
       },
     ],
+    status: { type: String, default: "Đang chờ duyệt" },
     totalBill: { type: Number },
     addressDelivery: { type: String },
     orderAt: { type: Date, required: true, default: new Date() },
@@ -35,5 +36,9 @@ const userSchema = new Schema({
 //   });
 //   return !userNameCount;
 // }, "User alredy exist");
+userSchema.methods.calculateTotalBill = function () {
+  if (!this.order || !Array.isArray(this.order.cart)) return 0;
+  return this.order.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+};
 const User = mongoose.model("User", userSchema);
 module.exports = User;

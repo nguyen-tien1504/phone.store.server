@@ -6,7 +6,7 @@ dotenv.config();
 const cors = require("cors");
 const PORT = 3000;
 const connectStr =
-  "mongodb+srv:tiennguyen:tiennguyen@cluster0.lgquc3a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  "mongodb+srv://tiennguyen:1111@cluster0.lgquc3a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Middle Ware
 const app = express();
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 const productRouter = require("./Routes/Product.Routes");
 const usersRouter = require("./Routes/Users.Routes");
-
+const categoryRouter = require("./Routes/Category.Routes");
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -28,7 +28,7 @@ app.use(function (req, res, next) {
 // Routes
 app.use("/products", productRouter);
 app.use("/users", usersRouter);
-
+app.use("/categories", categoryRouter);
 // Run DB and server
 mongoose
   .connect(connectStr)
@@ -39,4 +39,3 @@ mongoose
     });
   })
   .catch((err) => console.log(err));
-
